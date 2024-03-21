@@ -1,16 +1,7 @@
-# AFL++ Fuzz action
-
-
-## Background
-
-AFL++ is the most popular fuzzing engine used by many software engineers and security enthusatics. 
-The motivation is to create action is where the local workstation is exhausted, Github Actions can be used to fuzz the target continuously.
-
-## Inputs
-
-
-```yaml
- campaign_name:
+name: "AFL++ fuzzing action"
+description: "Action to run fuzz tests using AFL++"
+inputs:
+  campaign_name:
     description: "Name of your campaign"
     default: "none"
   fuzz_target:
@@ -31,4 +22,14 @@ The motivation is to create action is where the local workstation is exhausted, 
   qemu_mode:
     description: "QEMU Mode"
     default: false
-```
+runs:
+  using: "docker"
+  image: "Dockerfile"
+  args:
+    - ${{ inputs.campaign_name }}
+    - ${{ inputs.fuzz_target }}
+    - ${{ inputs.input_folder }}
+    - ${{ inputs.output_folder }}
+    - ${{ inputs.timeout }}
+    - ${{ inputs.time }}
+    - ${{ inputs.qemu_mode }}
